@@ -1,0 +1,154 @@
+table ventas_enriquecidas
+	lineageTag: c82c61ce-3084-41c6-81bc-9a60f92a74db
+	sourceLineageTag: [dbo].[ventas_enriquecidas]
+
+	column producto_id
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: d3666c32-4fa0-454c-af9e-d4d7bdaaa916
+		sourceLineageTag: producto_id
+		summarizeBy: none
+		sourceColumn: producto_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column cliente_id
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 73a0548a-1c13-4e6f-a243-b470dfc2b7e2
+		sourceLineageTag: cliente_id
+		summarizeBy: none
+		sourceColumn: cliente_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column venta_id
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: b1aed9ba-f70f-46a0-b3f1-7306ff92f678
+		sourceLineageTag: venta_id
+		summarizeBy: none
+		sourceColumn: venta_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 51f271cd-c5a7-49af-aa0d-73892cd2eede
+		sourceLineageTag: fecha
+		summarizeBy: none
+		sourceColumn: fecha
+
+		annotation SummarizationSetBy = Automatic
+
+	column cantidad
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: fe58ef35-409e-4aa2-afb2-cbf79b081367
+		sourceLineageTag: cantidad
+		summarizeBy: none
+		sourceColumn: cantidad
+
+		annotation SummarizationSetBy = Automatic
+
+	column total
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 0fce531b-15bb-4f8e-848a-153d204da5d2
+		sourceLineageTag: total
+		summarizeBy: none
+		sourceColumn: total
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_cliente
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: cbe0bd0d-22db-4d04-a34a-0086857c5b49
+		sourceLineageTag: nombre_cliente
+		summarizeBy: none
+		sourceColumn: nombre_cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column correo
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: bd48032e-0e70-442b-a538-cfdd9248671d
+		sourceLineageTag: correo
+		summarizeBy: none
+		sourceColumn: correo
+
+		annotation SummarizationSetBy = Automatic
+
+	column pais
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e656f9a5-c5f6-4fb2-9cc2-eae1b97e4c4c
+		sourceLineageTag: pais
+		summarizeBy: none
+		sourceColumn: pais
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_producto
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 2a4050fb-d122-4cd3-903f-ac63d372ca21
+		sourceLineageTag: nombre_producto
+		summarizeBy: none
+		sourceColumn: nombre_producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column categoría
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 33d212fa-d3ae-46a0-9391-38a3b10d10aa
+		sourceLineageTag: categoría
+		summarizeBy: none
+		sourceColumn: categoría
+
+		annotation SummarizationSetBy = Automatic
+
+	column precio
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: e825fc7d-f8f1-4ec4-9d7c-f305b7255fc5
+		sourceLineageTag: precio
+		summarizeBy: none
+		sourceColumn: precio
+
+		annotation SummarizationSetBy = Automatic
+
+	column categoria_mayus
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 115d2b6a-4210-48a6-97ee-6a7512809fd5
+		sourceLineageTag: categoria_mayus
+		summarizeBy: none
+		sourceColumn: categoria_mayus
+
+		annotation SummarizationSetBy = Automatic
+
+	column descuento_aplicado
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 78781248-1c4d-4193-9204-cc78448f05e4
+		sourceLineageTag: descuento_aplicado
+		summarizeBy: none
+		sourceColumn: descuento_aplicado
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ventas_enriquecidas = entity
+		mode: directLake
+		source
+			entityName: ventas_enriquecidas
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

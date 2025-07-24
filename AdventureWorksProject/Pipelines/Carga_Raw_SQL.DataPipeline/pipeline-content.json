@@ -1,0 +1,149 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "SqlServerSource",
+            "sqlReaderQuery": "Select * from dbo.TablaControlCarga where  tableType = 'Dim'",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "datasetSettings": {
+            "type": "SqlServerTable",
+            "typeProperties": {
+              "schema": "dbo",
+              "table": "TablaControlCarga",
+              "database": "AdventureWorks2019"
+            },
+            "schema": [],
+            "externalReferences": {
+              "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+            },
+            "annotations": []
+          },
+          "firstRowOnly": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "LookupTablasDim",
+        "dependsOn": []
+      },
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "isSequential": true,
+          "items": {
+            "value": "@activity('LookupTablasDim').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "Copy",
+              "typeProperties": {
+                "source": {
+                  "type": "AzureSqlSource",
+                  "partitionOption": "None",
+                  "queryTimeout": "02:00:00",
+                  "datasetSettings": {
+                    "type": "AzureSqlTable",
+                    "typeProperties": {
+                      "schema": {
+                        "value": "@item().schemaName",
+                        "type": "Expression"
+                      },
+                      "table": {
+                        "value": "@item().tableName",
+                        "type": "Expression"
+                      },
+                      "database": "AdventureWorks2019"
+                    },
+                    "schema": [],
+                    "externalReferences": {
+                      "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+                    },
+                    "annotations": []
+                  }
+                },
+                "sink": {
+                  "type": "ParquetSink",
+                  "formatSettings": {
+                    "type": "ParquetWriteSettings",
+                    "enableVertiParquet": true
+                  },
+                  "storeSettings": {
+                    "type": "LakehouseWriteSettings"
+                  },
+                  "datasetSettings": {
+                    "type": "Parquet",
+                    "typeProperties": {
+                      "location": {
+                        "type": "LakehouseLocation",
+                        "folderPath": {
+                          "value": "@item().targetFolder",
+                          "type": "Expression"
+                        },
+                        "fileName": {
+                          "value": "@{item().tableName}.parquet",
+                          "type": "Expression"
+                        }
+                      },
+                      "compressionCodec": "snappy"
+                    },
+                    "schema": [],
+                    "linkedService": {
+                      "name": "Lakehouse_AdventureWorks2019",
+                      "properties": {
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "artifactId": "9857ba45-77b7-bdce-4ace-a9ac68b8a2ba",
+                          "workspaceId": "00000000-0000-0000-0000-000000000000",
+                          "rootFolder": "Files"
+                        },
+                        "annotations": []
+                      }
+                    },
+                    "annotations": []
+                  }
+                },
+                "translator": {
+                  "type": "TabularTranslator",
+                  "typeConversion": true,
+                  "typeConversionSettings": {
+                    "allowDataTruncation": true,
+                    "treatBooleanAsNumber": false
+                  }
+                },
+                "enableStaging": false
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Copy data1",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "ForEach1",
+        "dependsOn": [
+          {
+            "activity": "LookupTablasDim",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

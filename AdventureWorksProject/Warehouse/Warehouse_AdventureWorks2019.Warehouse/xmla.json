@@ -1,0 +1,681 @@
+{
+  "name": "{{Dataset_Name}}",
+  "compatibilityLevel": 1604,
+  "model": {
+    "name": "{{Dataset_Name}}",
+    "culture": "en-US",
+    "collation": "Latin1_General_100_BIN2_UTF8",
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "sourceQueryCulture": "en-US",
+    "tables": [
+      {
+        "name": "clientes_curados",
+        "sourceLineageTag": "[dbo].[clientes_curados]",
+        "columns": [
+          {
+            "name": "cliente_id",
+            "dataType": "string",
+            "sourceColumn": "cliente_id",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "cliente_id",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "nombre_cliente",
+            "dataType": "string",
+            "sourceColumn": "nombre_cliente",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "nombre_cliente",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "correo",
+            "dataType": "string",
+            "sourceColumn": "correo",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "correo",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "pais",
+            "dataType": "string",
+            "sourceColumn": "pais",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "pais",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "{{Partition_Name}}",
+            "mode": "directLake",
+            "source": {
+              "type": "entity",
+              "entityName": "clientes_curados",
+              "expressionSource": "DatabaseQuery",
+              "schemaName": "dbo"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "IsTableInBiModel",
+            "value": "False"
+          }
+        ]
+      },
+      {
+        "name": "clientes_curados_wh",
+        "sourceLineageTag": "[dbo].[clientes_curados_wh]",
+        "columns": [
+          {
+            "name": "cliente_id",
+            "dataType": "string",
+            "sourceColumn": "cliente_id",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "cliente_id",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "nombre_cliente",
+            "dataType": "string",
+            "sourceColumn": "nombre_cliente",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "nombre_cliente",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "correo",
+            "dataType": "string",
+            "sourceColumn": "correo",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "correo",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "pais",
+            "dataType": "string",
+            "sourceColumn": "pais",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "pais",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "{{Partition_Name}}",
+            "mode": "directLake",
+            "source": {
+              "type": "entity",
+              "entityName": "clientes_curados_wh",
+              "expressionSource": "DatabaseQuery",
+              "schemaName": "dbo"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "IsTableInBiModel",
+            "value": "False"
+          }
+        ]
+      },
+      {
+        "name": "my_first_dbt_model",
+        "sourceLineageTag": "[dbo].[my_first_dbt_model]",
+        "columns": [
+          {
+            "name": "id",
+            "dataType": "int64",
+            "sourceColumn": "id",
+            "formatString": "0",
+            "sourceProviderType": "int",
+            "sourceLineageTag": "id",
+            "summarizeBy": "sum",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "{{Partition_Name}}",
+            "mode": "directLake",
+            "source": {
+              "type": "entity",
+              "entityName": "my_first_dbt_model",
+              "expressionSource": "DatabaseQuery",
+              "schemaName": "dbo"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "IsTableInBiModel",
+            "value": "False"
+          }
+        ]
+      },
+      {
+        "name": "my_second_dbt_model",
+        "sourceLineageTag": "[dbo].[my_second_dbt_model]",
+        "columns": [
+          {
+            "name": "id",
+            "dataType": "int64",
+            "sourceColumn": "id",
+            "formatString": "0",
+            "sourceProviderType": "int",
+            "sourceLineageTag": "id",
+            "summarizeBy": "sum",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "{{Partition_Name}}",
+            "mode": "directLake",
+            "source": {
+              "type": "entity",
+              "entityName": "my_second_dbt_model",
+              "expressionSource": "DatabaseQuery",
+              "schemaName": "dbo"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "IsTableInBiModel",
+            "value": "False"
+          }
+        ]
+      },
+      {
+        "name": "productos_curados_wh",
+        "sourceLineageTag": "[dbo].[productos_curados_wh]",
+        "columns": [
+          {
+            "name": "producto_id",
+            "dataType": "string",
+            "sourceColumn": "producto_id",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "producto_id",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "nombre_producto",
+            "dataType": "string",
+            "sourceColumn": "nombre_producto",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "nombre_producto",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "categoría",
+            "dataType": "string",
+            "sourceColumn": "categoría",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "categoría",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "precio",
+            "dataType": "string",
+            "sourceColumn": "precio",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "precio",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "{{Partition_Name}}",
+            "mode": "directLake",
+            "source": {
+              "type": "entity",
+              "entityName": "productos_curados_wh",
+              "expressionSource": "DatabaseQuery",
+              "schemaName": "dbo"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "IsTableInBiModel",
+            "value": "False"
+          }
+        ]
+      },
+      {
+        "name": "ventas_curadas_wh",
+        "sourceLineageTag": "[dbo].[ventas_curadas_wh]",
+        "columns": [
+          {
+            "name": "venta_id",
+            "dataType": "string",
+            "sourceColumn": "venta_id",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "venta_id",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "fecha",
+            "dataType": "string",
+            "sourceColumn": "fecha",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "fecha",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "cliente_id",
+            "dataType": "string",
+            "sourceColumn": "cliente_id",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "cliente_id",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "producto_id",
+            "dataType": "string",
+            "sourceColumn": "producto_id",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "producto_id",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "cantidad",
+            "dataType": "string",
+            "sourceColumn": "cantidad",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "cantidad",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "total",
+            "dataType": "string",
+            "sourceColumn": "total",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "total",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "{{Partition_Name}}",
+            "mode": "directLake",
+            "source": {
+              "type": "entity",
+              "entityName": "ventas_curadas_wh",
+              "expressionSource": "DatabaseQuery",
+              "schemaName": "dbo"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "IsTableInBiModel",
+            "value": "False"
+          }
+        ]
+      },
+      {
+        "name": "ventas_enriquecidas_wh",
+        "sourceLineageTag": "[dbo].[ventas_enriquecidas_wh]",
+        "columns": [
+          {
+            "name": "producto_id",
+            "dataType": "string",
+            "sourceColumn": "producto_id",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "producto_id",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "cliente_id",
+            "dataType": "string",
+            "sourceColumn": "cliente_id",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "cliente_id",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "venta_id",
+            "dataType": "string",
+            "sourceColumn": "venta_id",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "venta_id",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "fecha",
+            "dataType": "string",
+            "sourceColumn": "fecha",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "fecha",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "cantidad",
+            "dataType": "string",
+            "sourceColumn": "cantidad",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "cantidad",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "total",
+            "dataType": "string",
+            "sourceColumn": "total",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "total",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "nombre_cliente",
+            "dataType": "string",
+            "sourceColumn": "nombre_cliente",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "nombre_cliente",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "correo",
+            "dataType": "string",
+            "sourceColumn": "correo",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "correo",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "pais",
+            "dataType": "string",
+            "sourceColumn": "pais",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "pais",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "nombre_producto",
+            "dataType": "string",
+            "sourceColumn": "nombre_producto",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "nombre_producto",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "categoría",
+            "dataType": "string",
+            "sourceColumn": "categoría",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "categoría",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "precio",
+            "dataType": "string",
+            "sourceColumn": "precio",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "precio",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "categoria_mayus",
+            "dataType": "string",
+            "sourceColumn": "categoria_mayus",
+            "sourceProviderType": "varchar",
+            "sourceLineageTag": "categoria_mayus",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          },
+          {
+            "name": "descuento_aplicado",
+            "dataType": "boolean",
+            "sourceColumn": "descuento_aplicado",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\"",
+            "sourceProviderType": "bit",
+            "sourceLineageTag": "descuento_aplicado",
+            "summarizeBy": "none",
+            "annotations": [
+              {
+                "name": "SummarizationSetBy",
+                "value": "Automatic"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "{{Partition_Name}}",
+            "mode": "directLake",
+            "source": {
+              "type": "entity",
+              "entityName": "ventas_enriquecidas_wh",
+              "expressionSource": "DatabaseQuery",
+              "schemaName": "dbo"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "IsTableInBiModel",
+            "value": "False"
+          }
+        ]
+      }
+    ],
+    "expressions": [
+      {
+        "name": "DatabaseQuery",
+        "kind": "m",
+        "expression": "let\n    database = {{TDS_Endpoint}}\nin\n    database\n"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "0"
+      },
+      {
+        "name": "SourceLineageTagType",
+        "value": "DatabaseFullyQualifiedName"
+      }
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+table ventas_curadas
+	lineageTag: 4c74aef2-6bf0-458e-a21e-875ce820264d
+	sourceLineageTag: [dbo].[ventas_curadas]
+
+	column venta_id
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 29226cf7-56b1-48b2-97af-7bee26641888
+		sourceLineageTag: venta_id
+		summarizeBy: none
+		sourceColumn: venta_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: c44dc885-49bc-4900-9aea-7b91fa5c80ef
+		sourceLineageTag: fecha
+		summarizeBy: none
+		sourceColumn: fecha
+
+		annotation SummarizationSetBy = Automatic
+
+	column cliente_id
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 072598a2-e05e-4fa7-8ddf-614f33288543
+		sourceLineageTag: cliente_id
+		summarizeBy: none
+		sourceColumn: cliente_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column producto_id
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 58e66c55-c0e4-4b60-a43d-ebe320acd1ce
+		sourceLineageTag: producto_id
+		summarizeBy: none
+		sourceColumn: producto_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column cantidad
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 4cbaff08-6703-46b1-a0f8-e25b6bfb7e2c
+		sourceLineageTag: cantidad
+		summarizeBy: none
+		sourceColumn: cantidad
+
+		annotation SummarizationSetBy = Automatic
+
+	column total
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: c688d4cf-560d-4220-9861-3a6bf87429c2
+		sourceLineageTag: total
+		summarizeBy: none
+		sourceColumn: total
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ventas_curadas = entity
+		mode: directLake
+		source
+			entityName: ventas_curadas
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,53 @@
+table productos_curados
+	lineageTag: 949f540c-f10d-4a28-a00e-8e986488c753
+	sourceLineageTag: [dbo].[productos_curados]
+
+	column producto_id
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 42b507cb-70bd-47b6-b0cc-44f57a9971b0
+		sourceLineageTag: producto_id
+		summarizeBy: none
+		sourceColumn: producto_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_producto
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3dc19847-2650-43de-955d-c96cce5c91a4
+		sourceLineageTag: nombre_producto
+		summarizeBy: none
+		sourceColumn: nombre_producto
+
+		annotation SummarizationSetBy = Automatic
+
+	column categoría
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 92d949db-ee7c-4766-ba06-cb115da0ba72
+		sourceLineageTag: categoría
+		summarizeBy: none
+		sourceColumn: categoría
+
+		annotation SummarizationSetBy = Automatic
+
+	column precio
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 3c9a3d65-784a-4acb-9729-f8947fe86a19
+		sourceLineageTag: precio
+		summarizeBy: none
+		sourceColumn: precio
+
+		annotation SummarizationSetBy = Automatic
+
+	partition productos_curados = entity
+		mode: directLake
+		source
+			entityName: productos_curados
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Tranformacion_Curated",
+    "description": "New notebook"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ff03fe84-8fa4-b053-4006-b39a2f93eb0c"
+  }
+}

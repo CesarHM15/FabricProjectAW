@@ -1,0 +1,257 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "formatSettings": {
+              "type": "DelimitedTextReadSettings"
+            },
+            "storeSettings": {
+              "type": "LakehouseReadSettings",
+              "recursive": true,
+              "enablePartitionDiscovery": false
+            },
+            "datasetSettings": {
+              "type": "DelimitedText",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "raw",
+                  "fileName": "clientes.csv"
+                },
+                "columnDelimiter": ",",
+                "quoteChar": "\"",
+                "escapeChar": "\\",
+                "firstRowAsHeader": true
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "RetailLakehouse",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "e55c728e-c5aa-b1f7-4929-73006875b41a",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Files"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "sink": {
+            "type": "LakehouseTableSink",
+            "tableActionOption": "Append",
+            "partitionOption": "None",
+            "datasetSettings": {
+              "type": "LakehouseTable",
+              "typeProperties": {
+                "table": "clientes"
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "RetailLakehouse",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "e55c728e-c5aa-b1f7-4929-73006875b41a",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Tables"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "enableStaging": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "CopiarClientes",
+        "dependsOn": []
+      },
+      {
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "formatSettings": {
+              "type": "DelimitedTextReadSettings"
+            },
+            "storeSettings": {
+              "type": "LakehouseReadSettings",
+              "recursive": true,
+              "enablePartitionDiscovery": false
+            },
+            "datasetSettings": {
+              "type": "DelimitedText",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "raw",
+                  "fileName": "productos.csv"
+                },
+                "columnDelimiter": ",",
+                "quoteChar": "\"",
+                "escapeChar": "\\",
+                "firstRowAsHeader": true
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "RetailLakehouse",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "e55c728e-c5aa-b1f7-4929-73006875b41a",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Files"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "sink": {
+            "type": "LakehouseTableSink",
+            "tableActionOption": "Append",
+            "partitionOption": "None",
+            "datasetSettings": {
+              "type": "LakehouseTable",
+              "typeProperties": {
+                "table": "productos"
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "RetailLakehouse",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "e55c728e-c5aa-b1f7-4929-73006875b41a",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Tables"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "enableStaging": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Copiarproductos",
+        "dependsOn": [
+          {
+            "activity": "CopiarClientes",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "DelimitedTextSource",
+            "formatSettings": {
+              "type": "DelimitedTextReadSettings"
+            },
+            "storeSettings": {
+              "type": "LakehouseReadSettings",
+              "recursive": true,
+              "enablePartitionDiscovery": false
+            },
+            "datasetSettings": {
+              "type": "DelimitedText",
+              "typeProperties": {
+                "location": {
+                  "type": "LakehouseLocation",
+                  "folderPath": "raw",
+                  "fileName": "ventas.csv"
+                },
+                "columnDelimiter": ",",
+                "quoteChar": "\"",
+                "escapeChar": "\\",
+                "firstRowAsHeader": true
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "RetailLakehouse",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "e55c728e-c5aa-b1f7-4929-73006875b41a",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Files"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "sink": {
+            "type": "LakehouseTableSink",
+            "tableActionOption": "Append",
+            "partitionOption": "None",
+            "datasetSettings": {
+              "type": "LakehouseTable",
+              "typeProperties": {
+                "table": "ventas"
+              },
+              "schema": [],
+              "linkedService": {
+                "name": "RetailLakehouse",
+                "properties": {
+                  "type": "Lakehouse",
+                  "typeProperties": {
+                    "artifactId": "e55c728e-c5aa-b1f7-4929-73006875b41a",
+                    "workspaceId": "00000000-0000-0000-0000-000000000000",
+                    "rootFolder": "Tables"
+                  },
+                  "annotations": []
+                }
+              },
+              "annotations": []
+            }
+          },
+          "enableStaging": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Copiarventas",
+        "dependsOn": [
+          {
+            "activity": "Copiarproductos",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
