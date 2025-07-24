@@ -1,0 +1,53 @@
+table clientes_curados_wh
+	lineageTag: a6584cec-505e-4e67-b547-9a1b08dfc7ef
+	sourceLineageTag: [dbo].[clientes_curados_wh]
+
+	column cliente_id
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: f97fbd91-1342-4aa0-a623-228d64ae2455
+		sourceLineageTag: cliente_id
+		summarizeBy: none
+		sourceColumn: cliente_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_cliente
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 78745be4-57e7-4401-8566-d2c79958cfce
+		sourceLineageTag: nombre_cliente
+		summarizeBy: none
+		sourceColumn: nombre_cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column correo
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: a30c85e6-efd0-482c-a3b0-416806d6e78f
+		sourceLineageTag: correo
+		summarizeBy: none
+		sourceColumn: correo
+
+		annotation SummarizationSetBy = Automatic
+
+	column pais
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 1d0f13e4-b95d-42fb-96a2-b735ec4293b5
+		sourceLineageTag: pais
+		summarizeBy: none
+		sourceColumn: pais
+
+		annotation SummarizationSetBy = Automatic
+
+	partition clientes_curados_wh = entity
+		mode: directLake
+		source
+			entityName: clientes_curados_wh
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

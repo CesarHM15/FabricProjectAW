@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "Carga_Raw_SQL"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "92732a7d-4210-8302-40e4-5ee855c8dfdc"
+  }
+}
