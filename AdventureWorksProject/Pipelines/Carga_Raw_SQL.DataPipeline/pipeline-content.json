@@ -65,7 +65,10 @@
                         "value": "@item().tableName",
                         "type": "Expression"
                       },
-                      "database": "AdventureWorks2019"
+                      "database": {
+                        "value": "@pipeline().parameters.source_db_pl_carga_raw",
+                        "type": "Expression"
+                      }
                     },
                     "schema": [],
                     "externalReferences": {
