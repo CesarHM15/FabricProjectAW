@@ -15,7 +15,10 @@
             "typeProperties": {
               "schema": "dbo",
               "table": "TablaControlCarga",
-              "database": "AdventureWorks2019"
+              "database": {
+                "value": "@pipeline().parameters.source_db_pl_carga_raw",
+                "type": "Expression"
+              }
             },
             "schema": [],
             "externalReferences": {
@@ -144,6 +147,11 @@
           }
         ]
       }
-    ]
+    ],
+    "parameters": {
+      "source_db_pl_carga_raw": {
+        "type": "string"
+      }
+    }
   }
 }

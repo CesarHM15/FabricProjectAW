@@ -4,7 +4,9 @@
       {
         "type": "InvokePipeline",
         "typeProperties": {
-          "parameters": {},
+          "parameters": {
+            "source_db_pl_carga_raw": ""
+          },
           "waitOnCompletion": true,
           "workspaceId": "00000000-0000-0000-0000-000000000000",
           "pipelineId": "92732a7d-4210-8302-40e4-5ee855c8dfdc",
@@ -81,6 +83,12 @@
           }
         ]
       }
-    ]
+    ],
+    "parameters": {
+      "sourcedb_pl_padre": {
+        "type": "string",
+        "defaultValue": "AdventureWorks2019"
+      }
+    }
   }
 }
