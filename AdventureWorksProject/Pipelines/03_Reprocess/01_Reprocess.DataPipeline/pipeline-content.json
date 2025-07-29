@@ -1,0 +1,47 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "IfCondition",
+        "typeProperties": {
+          "expression": {
+            "value": "@if(equals(pipeline().parameters.FullLoad, 'True'),'True', 'False')",
+            "type": "Expression"
+          },
+          "ifTrueActivities": [
+            {
+              "type": "InvokePipeline",
+              "typeProperties": {
+                "parameters": {},
+                "waitOnCompletion": true,
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "pipelineId": "e1b8b372-84bb-b01a-4f3d-8f3e5ba9cf71",
+                "operationType": "InvokeFabricPipeline"
+              },
+              "externalReferences": {
+                "connection": "9f583629-dd51-4695-84cc-4abce255069b"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "FullLoadFact",
+              "dependsOn": []
+            }
+          ],
+          "ifFalseActivities": []
+        },
+        "name": "IsFullLoad",
+        "dependsOn": []
+      }
+    ],
+    "parameters": {
+      "FullLoad": {
+        "type": "string"
+      }
+    }
+  }
+}
