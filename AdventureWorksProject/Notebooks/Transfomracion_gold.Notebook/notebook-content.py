@@ -99,7 +99,7 @@ df_dim_product = (
     )
 )
 
-df_dim_product.write.format("delta").mode("overwrite").save("Files/gold/production/productcategory/ProductCategory_curateddim_product")
+df_dim_product.write.format("delta").mode("overwrite").save("Files/gold/production/productcategory/dim_ProductCategory")
 
 
 

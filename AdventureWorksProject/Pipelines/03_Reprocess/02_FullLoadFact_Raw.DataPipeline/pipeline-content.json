@@ -66,24 +66,29 @@
                   }
                 },
                 "sink": {
-                  "type": "DelimitedTextSink",
+                  "type": "ParquetSink",
                   "formatSettings": {
-                    "type": "DelimitedTextWriteSettings",
-                    "fileExtension": ".txt"
+                    "type": "ParquetWriteSettings",
+                    "enableVertiParquet": true
                   },
                   "storeSettings": {
                     "type": "LakehouseWriteSettings"
                   },
                   "datasetSettings": {
-                    "type": "DelimitedText",
+                    "type": "Parquet",
                     "typeProperties": {
                       "location": {
-                        "type": "LakehouseLocation"
+                        "type": "LakehouseLocation",
+                        "folderPath": {
+                          "value": "@item().targetfolder",
+                          "type": "Expression"
+                        },
+                        "fileName": {
+                          "value": "@concat(item().tablename,'.parquet')",
+                          "type": "Expression"
+                        }
                       },
-                      "columnDelimiter": ",",
-                      "quoteChar": "\"",
-                      "escapeChar": "\\",
-                      "firstRowAsHeader": true
+                      "compressionCodec": "snappy"
                     },
                     "schema": [],
                     "linkedService": {
