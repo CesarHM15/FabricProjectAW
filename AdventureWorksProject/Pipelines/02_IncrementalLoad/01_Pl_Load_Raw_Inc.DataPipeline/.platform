@@ -1,12 +1,11 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
-    "type": "Notebook",
-    "displayName": "Transformacion_gold",
-    "description": "New notebook"
+    "type": "DataPipeline",
+    "displayName": "01_Pl_Load_Raw_Inc"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "8147193c-4975-8b8b-4cd7-3c98c638ad99"
+    "logicalId": "07c7522c-3cce-adc0-46b5-f607c5150741"
   }
 }
