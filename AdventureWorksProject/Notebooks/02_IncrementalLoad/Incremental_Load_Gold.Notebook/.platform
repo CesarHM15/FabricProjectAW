@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
     "type": "Notebook",
-    "displayName": "Incremental_Load_Silver",
+    "displayName": "Incremental_Load_Gold",
     "description": "New notebook"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "3b984d2a-cdc1-8f2a-4ee1-03b24d8b255e"
+    "logicalId": "31af748d-47a2-b0ba-4377-deeab22e3bdc"
   }
 }
