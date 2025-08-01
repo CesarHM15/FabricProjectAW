@@ -37,7 +37,7 @@
           "scripts": [
             {
               "text": {
-                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n    IdEjecucion,\n    NombrePipeline,\n    Etapa,\n    FechaInicio,\n    Estatus,\n    EjecutadoPor\n)\nVALUES (\n    '@{pipeline().RunId}',\n    'pipelineRaw',\n    'RAW',\n    GETDATE(),\n    'En ejecucion',\n    '@{pipeline().DataFactory}'\n);",
+                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n    IdEjecucion,\n    NombrePipeline,\n    Etapa,\n    FechaInicio,\n    Estatus,\n    EjecutadoPor\n)\nVALUES (\n     pipeline().RunId, \n    'pipelineRaw',\n    'RAW',\n    GETDATE(),\n    'Iniciado',\n    pipeline().DataFactory\n);",
                 "type": "Expression"
               },
               "type": "NonQuery"
@@ -57,41 +57,6 @@
         },
         "name": "ScriptRawStart",
         "dependsOn": []
-      },
-      {
-        "type": "Script",
-        "typeProperties": {
-          "database": "AdventureWorks2019",
-          "scripts": [
-            {
-              "text": {
-                "value": "UPDATE dbo.LogEjecucionPipeline\nSET \n    Estatus = 'Fallido',\n    FechaFin = GETDATE(),\n    MensajeError = '@{activity('Invoke pipelineRaw').output.failureReason}'\nWHERE \n    IdEjecucion = '@{pipeline().RunId}';",
-                "type": "Expression"
-              },
-              "type": "NonQuery"
-            }
-          ],
-          "scriptBlockExecutionTimeout": "02:00:00"
-        },
-        "externalReferences": {
-          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
-        },
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureInput": false,
-          "secureOutput": false
-        },
-        "name": "ScriptRawStartFailed",
-        "dependsOn": [
-          {
-            "activity": "Invoke pipelineRaw",
-            "dependencyConditions": [
-              "Failed"
-            ]
-          }
-        ]
       }
     ]
   }
