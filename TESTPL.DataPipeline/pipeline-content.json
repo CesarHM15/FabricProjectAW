@@ -1,0 +1,65 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Fail1",
+        "type": "Fail",
+        "dependsOn": [],
+        "typeProperties": {
+          "message": "test",
+          "errorCode": "123"
+        }
+      },
+      {
+        "name": "Set variable1",
+        "type": "SetVariable",
+        "dependsOn": [
+          {
+            "activity": "Fail1",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ],
+        "policy": {
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "variableName": "pipelineReturnValue",
+          "value": [
+            {
+              "key": "ErrorMessage",
+              "value": {
+                "type": "Expression",
+                "content": "@activity('Fail1').output.message"
+              }
+            }
+          ],
+          "setSystemVariable": true
+        }
+      },
+      {
+        "name": "Fail1_copy1",
+        "type": "Fail",
+        "dependsOn": [
+          {
+            "activity": "Set variable1",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "typeProperties": {
+          "message": "'Test'",
+          "errorCode": "'23213'"
+        }
+      }
+    ],
+    "variables": {
+      "Mnesaje": {
+        "type": "String"
+      }
+    }
+  }
+}
