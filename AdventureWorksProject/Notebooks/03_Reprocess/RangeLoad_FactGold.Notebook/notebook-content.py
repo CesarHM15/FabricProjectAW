@@ -22,8 +22,8 @@
 
 # PARAMETERS CELL ********************
 
-startDateCarga = '2011-05-31'
-endDateCarga = '2011-05-31'
+startDateCarga = ''
+endDateCarga = ''
 
 
 # METADATA ********************
