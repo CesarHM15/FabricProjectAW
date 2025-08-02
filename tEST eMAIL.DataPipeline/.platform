@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "tEST eMAIL"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "937ed555-0c5e-97a7-46d1-3cabb589ff66"
+  }
+}

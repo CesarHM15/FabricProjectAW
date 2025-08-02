@@ -23,12 +23,24 @@
           "secureOutput": false
         },
         "name": "Pipeline_IngestaRaw",
-        "dependsOn": []
+        "dependsOn": [
+          {
+            "activity": "ScriptRawStart",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
       },
       {
         "type": "InvokePipeline",
         "typeProperties": {
-          "parameters": {},
+          "parameters": {
+            "pieline": {
+              "value": "@pipeline().PipelineName",
+              "type": "Expression"
+            }
+          },
           "waitOnCompletion": true,
           "workspaceId": "00000000-0000-0000-0000-000000000000",
           "pipelineId": "857f12b6-faa1-baac-4d4f-4dfdd959911d",
@@ -79,6 +91,314 @@
             "activity": "Pipeline_TransformacionesCurated",
             "dependencyConditions": [
               "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Script",
+        "typeProperties": {
+          "database": "AdventureWorks2019",
+          "scripts": [
+            {
+              "text": {
+                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n\n    IdEjecucion,\n\n    NombrePipeline,\n\n    Etapa,\n\n    FechaInicio,\n\n    Estatus,\n\n    EjecutadoPor\n\n)\n\nVALUES (\n\n    '@{pipeline().RunId}',\n\n    '01_PL_Load_Raw_SQL',\n\n    'RAW',\n\n    GETDATE(),\n\n    'En ejecucion',\n\n    '@{pipeline().DataFactory}'\n\n);",
+                "type": "Expression"
+              },
+              "type": "NonQuery"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        },
+        "externalReferences": {
+          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ScriptRawStart",
+        "dependsOn": []
+      },
+      {
+        "type": "Script",
+        "typeProperties": {
+          "database": "AdventureWorks2019",
+          "scripts": [
+            {
+              "text": {
+                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n    IdEjecucion,\n    NombrePipeline,\n    Etapa,\n    FechaInicio,\n    Estatus,\n    EjecutadoPor\n)\nVALUES (\n    '@{pipeline().RunId}',\n    '02_PL_TransformacionesCurated',\n    'SILVER',\n    GETDATE(),\n    'En ejecucion',\n    '@{pipeline().DataFactory}'\n);",
+                "type": "Expression"
+              },
+              "type": "NonQuery"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        },
+        "externalReferences": {
+          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ScriptSilverStart",
+        "dependsOn": [
+          {
+            "activity": "Pipeline_IngestaRaw",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Script",
+        "typeProperties": {
+          "database": "AdventureWorks2019",
+          "scripts": [
+            {
+              "text": {
+                "value": "UPDATE dbo.LogEjecucionPipeline\nSET Estatus = 'Completado',\n    FechaFin = GETDATE()\nWHERE ETAPA = 'RAW' AND IdEjecucion = '@{pipeline().RunId}';",
+                "type": "Expression"
+              },
+              "type": "NonQuery"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        },
+        "externalReferences": {
+          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "SucceededRaw",
+        "dependsOn": [
+          {
+            "activity": "Pipeline_IngestaRaw",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Script",
+        "typeProperties": {
+          "database": "AdventureWorks2019",
+          "scripts": [
+            {
+              "text": {
+                "value": "UPDATE dbo.LogEjecucionPipeline\nSET \n    Estatus = 'Fallido',\n    FechaFin = GETDATE(),\n    MensajeError = '@{activity('Pipeline_IngestaRaw').output.failureReason}'\nWHERE \n    Etapa = 'RAW' AND IdEjecucion = '@{pipeline().RunId}';",
+                "type": "Expression"
+              },
+              "type": "NonQuery"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        },
+        "externalReferences": {
+          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "FailedRaw",
+        "dependsOn": [
+          {
+            "activity": "Pipeline_IngestaRaw",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Script",
+        "typeProperties": {
+          "database": "AdventureWorks2019",
+          "scripts": [
+            {
+              "text": {
+                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n    IdEjecucion,\n    NombrePipeline,\n    Etapa,\n    FechaInicio,\n    Estatus,\n    EjecutadoPor\n)\nVALUES (\n    '@{pipeline().RunId}',\n    '03_PL_TransformacionesGold',\n    'GOLD',\n    GETDATE(),\n    'En ejecucion',\n    '@{pipeline().DataFactory}'\n);",
+                "type": "Expression"
+              },
+              "type": "NonQuery"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        },
+        "externalReferences": {
+          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "ScriptGoldStart",
+        "dependsOn": [
+          {
+            "activity": "Pipeline_TransformacionesCurated",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Script",
+        "typeProperties": {
+          "database": "AdventureWorks2019",
+          "scripts": [
+            {
+              "text": {
+                "value": "UPDATE dbo.LogEjecucionPipeline\nSET Estatus = 'Completado',\n    FechaFin = GETDATE()\nWHERE ETAPA = 'SILVER' AND IdEjecucion = '@{pipeline().RunId}';",
+                "type": "Expression"
+              },
+              "type": "NonQuery"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        },
+        "externalReferences": {
+          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "SucceededSilver",
+        "dependsOn": [
+          {
+            "activity": "Pipeline_TransformacionesCurated",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Script",
+        "typeProperties": {
+          "database": "AdventureWorks2019",
+          "scripts": [
+            {
+              "text": {
+                "value": "UPDATE dbo.LogEjecucionPipeline\nSET \n    Estatus = 'Fallido',\n    FechaFin = GETDATE(),\n    MensajeError = '@{activity('Pipeline_TransformacionesCurated').output.failureReason}'\nWHERE \n    Etapa = 'SILVER' AND IdEjecucion = '@{pipeline().RunId}';",
+                "type": "Expression"
+              },
+              "type": "NonQuery"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        },
+        "externalReferences": {
+          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "FailedSilver",
+        "dependsOn": [
+          {
+            "activity": "Pipeline_TransformacionesCurated",
+            "dependencyConditions": [
+              "Failed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Script",
+        "typeProperties": {
+          "database": "AdventureWorks2019",
+          "scripts": [
+            {
+              "text": {
+                "value": "UPDATE dbo.LogEjecucionPipeline\nSET Estatus = 'Completado',\n    FechaFin = GETDATE()\nWHERE ETAPA = 'GOLD' AND IdEjecucion = '@{pipeline().RunId}';",
+                "type": "Expression"
+              },
+              "type": "NonQuery"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        },
+        "externalReferences": {
+          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "SucceededGold",
+        "dependsOn": [
+          {
+            "activity": "Pipeline_TransformacionesGold",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Script",
+        "typeProperties": {
+          "database": "AdventureWorks2019",
+          "scripts": [
+            {
+              "text": {
+                "value": "UPDATE dbo.LogEjecucionPipeline\nSET \n    Estatus = 'Fallido',\n    FechaFin = GETDATE(),\n    MensajeError = '@{activity('Pipeline_IngestaRaw').output.failureReason}'\nWHERE \n    Etapa = 'GOLD' AND IdEjecucion = '@{pipeline().RunId}';",
+                "type": "Expression"
+              },
+              "type": "NonQuery"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        },
+        "externalReferences": {
+          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "FailedGold",
+        "dependsOn": [
+          {
+            "activity": "Pipeline_TransformacionesGold",
+            "dependencyConditions": [
+              "Failed"
             ]
           }
         ]
