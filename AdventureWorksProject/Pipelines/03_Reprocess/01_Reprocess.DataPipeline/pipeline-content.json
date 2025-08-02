@@ -94,7 +94,16 @@
             {
               "type": "InvokePipeline",
               "typeProperties": {
-                "parameters": {},
+                "parameters": {
+                  "startDateCarga": {
+                    "value": "@pipeline().parameters.StartDate",
+                    "type": "Expression"
+                  },
+                  "endDateCarga": {
+                    "value": "@pipeline().parameters.EndDate",
+                    "type": "Expression"
+                  }
+                },
                 "waitOnCompletion": true,
                 "workspaceId": "00000000-0000-0000-0000-000000000000",
                 "pipelineId": "c6bfbac9-fc44-b9c8-4567-d60b347e8e5f",
@@ -112,6 +121,82 @@
               },
               "name": "Invoke RangeRaw",
               "dependsOn": []
+            },
+            {
+              "type": "InvokePipeline",
+              "typeProperties": {
+                "parameters": {
+                  "endDateCarga": {
+                    "value": "@pipeline().parameters.EndDate",
+                    "type": "Expression"
+                  },
+                  "startDateCarga": {
+                    "value": "@pipeline().parameters.StartDate",
+                    "type": "Expression"
+                  }
+                },
+                "waitOnCompletion": true,
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "pipelineId": "b56097bf-5325-927a-4383-5a0546eda276",
+                "operationType": "InvokeFabricPipeline"
+              },
+              "externalReferences": {
+                "connection": "9f583629-dd51-4695-84cc-4abce255069b"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Invoke RangeSilver",
+              "dependsOn": [
+                {
+                  "activity": "Invoke RangeRaw",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "InvokePipeline",
+              "typeProperties": {
+                "parameters": {
+                  "endDateCarga": {
+                    "value": "@pipeline().parameters.EndDate",
+                    "type": "Expression"
+                  },
+                  "startDateCarga": {
+                    "value": "@pipeline().parameters.StartDate",
+                    "type": "Expression"
+                  }
+                },
+                "waitOnCompletion": true,
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "pipelineId": "e091b9da-7b78-ba7a-4a66-adafb9195354",
+                "operationType": "InvokeFabricPipeline"
+              },
+              "externalReferences": {
+                "connection": "9f583629-dd51-4695-84cc-4abce255069b"
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Invoke RangeGold",
+              "dependsOn": [
+                {
+                  "activity": "Invoke RangeSilver",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
             }
           ]
         },
@@ -121,6 +206,12 @@
     ],
     "parameters": {
       "FullLoad": {
+        "type": "string"
+      },
+      "EndDate": {
+        "type": "string"
+      },
+      "StartDate": {
         "type": "string"
       }
     }
