@@ -5,7 +5,7 @@
         "type": "IfCondition",
         "typeProperties": {
           "expression": {
-            "value": "@if(equals(pipeline().parameters.FullLoad, 'True'),'True', 'False')",
+            "value": "@if(equals(pipeline().parameters.IsFullLoad, 'Yes'), 'True', 'False')\n",
             "type": "Expression"
           },
           "ifTrueActivities": [
@@ -205,8 +205,9 @@
       }
     ],
     "parameters": {
-      "FullLoad": {
-        "type": "string"
+      "IsFullLoad": {
+        "type": "string",
+        "defaultValue": "No"
       },
       "EndDate": {
         "type": "string"
