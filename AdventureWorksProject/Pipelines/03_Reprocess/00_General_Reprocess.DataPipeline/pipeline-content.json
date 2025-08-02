@@ -1,0 +1,149 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "InvokePipeline",
+        "typeProperties": {
+          "parameters": {
+            "IsFullLoad": "No",
+            "EndDate": {
+              "value": "@pipeline().parameters.EndDate",
+              "type": "Expression"
+            },
+            "StartDate": {
+              "value": "@pipeline().parameters.StartDate",
+              "type": "Expression"
+            }
+          },
+          "waitOnCompletion": true,
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "pipelineId": "c77df737-221c-81ac-424f-d012a80bce6e",
+          "operationType": "InvokeFabricPipeline"
+        },
+        "externalReferences": {
+          "connection": "9f583629-dd51-4695-84cc-4abce255069b"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Invoke GeneralReprocess",
+        "dependsOn": []
+      },
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "SqlServerSource",
+            "sqlReaderStoredProcedureName": "[dbo].[SP_ETL_PipelineTableHTML]",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "datasetSettings": {
+            "type": "SqlServerTable",
+            "typeProperties": {
+              "database": "AdventureWorks2019"
+            },
+            "schema": [],
+            "externalReferences": {
+              "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+            },
+            "annotations": []
+          },
+          "firstRowOnly": true
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "TablaHTML",
+        "dependsOn": [
+          {
+            "activity": "Invoke GeneralReprocess",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Office365Outlook",
+        "typeProperties": {
+          "inputs": {
+            "body": {
+              "To": "cesar_hm15@hotmail.com; aarenas732@gmail.com",
+              "Subject": "Control de ejecuciones Adventure Works",
+              "Body": "<style>\n#customers {\n    font-family: Arial, Helvetica, sans-serif;\n    border-collapse: collapse;\n    width: 100%;\n}\n\n#customers td, \n#customers th {\n    border: 1px solid #ddd;\n    padding: 8px;\n    white-space: nowrap;\n}\n\n#customers tr:nth-child(even) {\n    background-color: #f2f2f2;\n}\n\n#customers tr:hover {\n    background-color: #ddd;\n}\n\n#customers th {\n    padding-top: 12px;\n    padding-bottom: 12px;\n    text-align: left;\n    background-color: #005792; /* Azul formal */\n    color: white;\n}\n</style>\n\n<h2 style=\"color:#003366;font-family:Arial, Helvetica, sans-serif;text-align:center;\">\n    ADVENTURE WORKS COMPANY\n</h2>\n\n<table id=\"customers\">\n    @{activity('TablaHTML').output.firstRow.Header}\n    @{activity('TablaHTML').output.firstRow.ConcatenatedRows}\n</table>\n",
+              "Sensitivity": "",
+              "Importance": "Normal"
+            },
+            "method": "post",
+            "path": "/v2/Mail"
+          }
+        },
+        "name": "Office 365 Outlook1",
+        "dependsOn": [
+          {
+            "activity": "TablaHTML",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Script",
+        "typeProperties": {
+          "database": "AdventureWorks2019",
+          "scripts": [
+            {
+              "text": {
+                "value": "UPDATE dbo.LogEjecucionPipeline\nSET CorreoEnviado = 1\nWHERE CorreoEnviado IS NULL OR CorreoEnviado <> 1;",
+                "type": "Expression"
+              },
+              "type": "NonQuery"
+            }
+          ],
+          "scriptBlockExecutionTimeout": "02:00:00"
+        },
+        "externalReferences": {
+          "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "UpdateMailSend",
+        "dependsOn": [
+          {
+            "activity": "Office 365 Outlook1",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "IsFullLoad": {
+        "type": "string",
+        "defaultValue": "No"
+      },
+      "StartDate": {
+        "type": "string"
+      },
+      "EndDate": {
+        "type": "string"
+      }
+    }
+  }
+}

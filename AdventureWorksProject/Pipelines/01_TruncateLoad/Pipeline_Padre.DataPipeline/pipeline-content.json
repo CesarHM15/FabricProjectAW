@@ -102,7 +102,7 @@
           "scripts": [
             {
               "text": {
-                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n\n    IdEjecucion,\n\n    NombrePipeline,\n\n    Etapa,\n\n    FechaInicio,\n\n    Estatus,\n\n    EjecutadoPor\n\n)\n\nVALUES (\n\n    '@{pipeline().RunId}',\n\n    '01_PL_Load_Raw_SQL',\n\n    'RAW',\n\n    GETDATE(),\n\n    'En ejecucion',\n\n    '@{pipeline().DataFactory}'\n\n);",
+                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n\n    IdEjecucion,\n\n    NombrePipeline,\n\n    Etapa,\n\n    FechaInicio,\n\n    Estatus,\n\n    WorkspaceID\n\n)\n\nVALUES (\n\n    '@{pipeline().RunId}',\n\n    '01_PL_Load_Raw_SQL',\n\n    'RAW',\n\n    GETDATE(),\n\n    'En ejecucion',\n\n    '@{pipeline().DataFactory}'\n\n);",
                 "type": "Expression"
               },
               "type": "NonQuery"
@@ -130,7 +130,7 @@
           "scripts": [
             {
               "text": {
-                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n    IdEjecucion,\n    NombrePipeline,\n    Etapa,\n    FechaInicio,\n    Estatus,\n    EjecutadoPor\n)\nVALUES (\n    '@{pipeline().RunId}',\n    '02_PL_TransformacionesCurated',\n    'SILVER',\n    GETDATE(),\n    'En ejecucion',\n    '@{pipeline().DataFactory}'\n);",
+                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n    IdEjecucion,\n    NombrePipeline,\n    Etapa,\n    FechaInicio,\n    Estatus,\n    WorkspaceID\n)\nVALUES (\n    '@{pipeline().RunId}',\n    '02_PL_TransformacionesCurated',\n    'SILVER',\n    GETDATE(),\n    'En ejecucion',\n    '@{pipeline().DataFactory}'\n);",
                 "type": "Expression"
               },
               "type": "NonQuery"
@@ -235,7 +235,7 @@
           "scripts": [
             {
               "text": {
-                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n    IdEjecucion,\n    NombrePipeline,\n    Etapa,\n    FechaInicio,\n    Estatus,\n    EjecutadoPor\n)\nVALUES (\n    '@{pipeline().RunId}',\n    '03_PL_TransformacionesGold',\n    'GOLD',\n    GETDATE(),\n    'En ejecucion',\n    '@{pipeline().DataFactory}'\n);",
+                "value": "INSERT INTO dbo.LogEjecucionPipeline (\n    IdEjecucion,\n    NombrePipeline,\n    Etapa,\n    FechaInicio,\n    Estatus,\n    WorkspaceID\n)\nVALUES (\n    '@{pipeline().RunId}',\n    '03_PL_TransformacionesGold',\n    'GOLD',\n    GETDATE(),\n    'En ejecucion',\n    '@{pipeline().DataFactory}'\n);",
                 "type": "Expression"
               },
               "type": "NonQuery"
