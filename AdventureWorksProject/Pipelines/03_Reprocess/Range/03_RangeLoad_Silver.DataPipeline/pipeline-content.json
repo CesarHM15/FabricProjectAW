@@ -1,5 +1,46 @@
 {
   "properties": {
-    "activities": []
+    "activities": [
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "6407c616-2592-9fef-405b-a7eae979646c",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "endDateCarga": {
+              "value": {
+                "value": "@pipeline().parameters.endDateCarga",
+                "type": "Expression"
+              },
+              "type": "string"
+            },
+            "startDateCarga": {
+              "value": {
+                "value": "@pipeline().parameters.startDateCarga",
+                "type": "Expression"
+              },
+              "type": "string"
+            }
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "Notebook1",
+        "dependsOn": []
+      }
+    ],
+    "parameters": {
+      "endDateCarga": {
+        "type": "string"
+      },
+      "startDateCarga": {
+        "type": "string"
+      }
+    }
   }
 }

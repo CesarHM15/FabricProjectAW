@@ -35,8 +35,7 @@
 
 # CELL ********************
 
-# Databricks notebook: Silver to Gold - FactSalesOrder
-from pyspark.sql.functions import col, current_timestamp
+from pyspark.sql.functions import col, current_timestamp, to_date
 
 # 1. Load silver layer data
 df_header = spark.read.format("delta").load("Files/curated/sales/salesorderheader/SalesOrderHeader_curated")
@@ -68,12 +67,13 @@ df_fact = df_detail.alias("d") \
         col("h.SubTotal"),
         col("h.TaxAmt"),
         col("h.Freight"),
-        col("h.ModifiedDate"),
+        to_date(col("d.ModifiedDate")).alias("ModifiedDate"),  # ✅ casteo aplicado aquí
         current_timestamp().alias("LoadDate")
     )
 
 # 3. Write fact table to gold layer
 df_fact.write.mode("overwrite").format("delta").save("Files/gold/sales/SalesOrder/FactSalesOrder")
+
 
 # METADATA ********************
 

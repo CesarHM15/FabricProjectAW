@@ -1,5 +1,150 @@
 {
   "properties": {
-    "activities": []
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "SqlServerSource",
+            "sqlReaderQuery": "Select * from dbo.TablaControlCarga where  tableType = 'Fact'",
+            "partitionOption": "None",
+            "queryTimeout": "02:00:00"
+          },
+          "datasetSettings": {
+            "type": "SqlServerTable",
+            "typeProperties": {
+              "database": "AdventureWorks2019"
+            },
+            "schema": [],
+            "externalReferences": {
+              "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+            },
+            "annotations": []
+          },
+          "firstRowOnly": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "LookupFact",
+        "dependsOn": []
+      },
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "items": {
+            "value": "@activity('LookupFact').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "Copy",
+              "typeProperties": {
+                "source": {
+                  "type": "SqlServerSource",
+                  "sqlReaderQuery": {
+                    "value": "@concat(\n  'SELECT * FROM ', \n  item().schemaName, \n  '.', \n  item().tableName, \n  ' WHERE ModifiedDate >= ''', \n  pipeline().parameters.startDateCarga, \n  ''' AND ModifiedDate <= ''', \n  pipeline().parameters.endDateCarga, \n  ''''\n)",
+                    "type": "Expression"
+                  },
+                  "partitionOption": "None",
+                  "queryTimeout": "02:00:00",
+                  "datasetSettings": {
+                    "type": "SqlServerTable",
+                    "typeProperties": {
+                      "database": "AdventureWorks2019"
+                    },
+                    "schema": [],
+                    "externalReferences": {
+                      "connection": "0fd88441-82a7-4126-95b1-e081c4298085"
+                    },
+                    "annotations": []
+                  }
+                },
+                "sink": {
+                  "type": "ParquetSink",
+                  "formatSettings": {
+                    "type": "ParquetWriteSettings",
+                    "enableVertiParquet": true
+                  },
+                  "storeSettings": {
+                    "type": "LakehouseWriteSettings"
+                  },
+                  "datasetSettings": {
+                    "type": "Parquet",
+                    "typeProperties": {
+                      "location": {
+                        "type": "LakehouseLocation",
+                        "folderPath": {
+                          "value": "@item().targetfolder",
+                          "type": "Expression"
+                        },
+                        "fileName": {
+                          "value": "@concat(item().tablename,'.parquet')",
+                          "type": "Expression"
+                        }
+                      },
+                      "compressionCodec": "snappy"
+                    },
+                    "schema": [],
+                    "linkedService": {
+                      "name": "Lakehouse_AdventureWorks2019",
+                      "properties": {
+                        "type": "Lakehouse",
+                        "typeProperties": {
+                          "artifactId": "9857ba45-77b7-bdce-4ace-a9ac68b8a2ba",
+                          "workspaceId": "00000000-0000-0000-0000-000000000000",
+                          "rootFolder": "Files"
+                        },
+                        "annotations": []
+                      }
+                    },
+                    "annotations": []
+                  }
+                },
+                "translator": {
+                  "type": "TabularTranslator",
+                  "typeConversion": true,
+                  "typeConversionSettings": {
+                    "allowDataTruncation": true,
+                    "treatBooleanAsNumber": false
+                  }
+                },
+                "enableStaging": false
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 0,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "Copy data1",
+              "dependsOn": []
+            }
+          ]
+        },
+        "name": "ForEach1",
+        "dependsOn": [
+          {
+            "activity": "LookupFact",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      }
+    ],
+    "parameters": {
+      "startDateCarga": {
+        "type": "string"
+      },
+      "endDateCarga": {
+        "type": "string"
+      }
+    }
   }
 }

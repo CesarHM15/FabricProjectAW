@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
   "metadata": {
     "type": "Notebook",
-    "displayName": "FullLoad_FactTranformacion_Silver",
+    "displayName": "RangeLoad_FactSilver",
     "description": "New notebook"
   },
   "config": {
     "version": "2.0",
-    "logicalId": "81c75d40-f6bc-8fff-45ad-7e5fb5bc0fc9"
+    "logicalId": "6407c616-2592-9fef-405b-a7eae979646c"
   }
 }

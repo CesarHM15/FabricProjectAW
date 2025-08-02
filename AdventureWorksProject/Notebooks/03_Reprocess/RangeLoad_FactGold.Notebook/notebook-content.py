@@ -20,10 +20,10 @@
 # META   }
 # META }
 
-# CELL ********************
+# PARAMETERS CELL ********************
 
-# Welcome to your new notebook
-# Type here in the cell editor to add code!
+startDateCarga = '2011-05-31'
+endDateCarga = '2011-05-31'
 
 
 # METADATA ********************
@@ -35,18 +35,23 @@
 
 # CELL ********************
 
-from pyspark.sql.functions import col, current_timestamp, current_date, date_sub, to_date
+from pyspark.sql.functions import col, current_timestamp, lit, to_date
 
-# 1. Load silver layer data
+# 1. Convertir fechas a tipo date para el filtro
+startDateCarga1 = to_date(lit(startDateCarga))
+endDateCarga1 = to_date(lit(endDateCarga))
+
+# 2. Cargar tablas silver
 df_header = spark.read.format("delta").load("Files/curated/sales/salesorderheader/SalesOrderHeader_curated")
 df_detail = spark.read.format("delta").load("Files/curated/sales/SalesOrderDetail/SalesOrderDetail_Curated")
 
-# 2. Filter detail table only (last 14 days)
+# 3. Filtrar tabla detail por rango de fechas
 df_detail_filtered = df_detail.filter(
-    to_date(col("ModifiedDate")) >= date_sub(current_date(), 14)  # ✅ aplicamos to_date aquí
+    (col("ModifiedDate") >= startDateCarga1) &
+    (col("ModifiedDate") <= endDateCarga1)
 )
 
-# 3. Join filtered detail with full header
+# 4. Join con tabla header
 df_fact = df_detail_filtered.alias("d") \
     .join(df_header.alias("h"), col("d.SalesOrderID") == col("h.SalesOrderID"), "inner") \
     .select(
@@ -72,15 +77,15 @@ df_fact = df_detail_filtered.alias("d") \
         col("h.SubTotal"),
         col("h.TaxAmt"),
         col("h.Freight"),
-        to_date(col("d.ModifiedDate")).alias("ModifiedDate"),  # ✅ casteo correcto
+        col("d.ModifiedDate"),  # ✅ Ya es tipo date
         current_timestamp().alias("LoadDate")
     )
 
-# 4. Write only the affected dates (based on detail.ModifiedDate)
+# 5. Escribir en la capa gold con replaceWhere usando los strings originales
 df_fact.write \
     .format("delta") \
     .mode("overwrite") \
-    .option("replaceWhere", "ModifiedDate >= DATE_SUB(CURRENT_DATE(), 14)") \
+    .option("replaceWhere", f"ModifiedDate >= '{startDateCarga}' AND ModifiedDate <= '{endDateCarga}'") \
     .save("Files/gold/sales/SalesOrder/FactSalesOrder")
 
 
@@ -93,24 +98,65 @@ df_fact.write \
 
 # CELL ********************
 
-spark.read.format("delta").load("Files/gold/sales/SalesOrder/FactSalesOrder").printSchema()
-
-# METADATA ********************
-
-# META {
-# META   "language": "python",
-# META   "language_group": "synapse_pyspark"
-# META }
-
-# CELL ********************
-
 # MAGIC %%sql
 # MAGIC 
-# MAGIC SELECT count(*) FROM delta.`Files/gold/sales/SalesOrder/FactSalesOrder`
+# MAGIC SELECT COUNT(*) 
+# MAGIC FROM delta.`Files/gold/sales/SalesOrder/FactSalesOrder`
 
 # METADATA ********************
 
 # META {
 # META   "language": "sparksql",
-# META   "language_group": "synapse_pyspark"
+# META   "language_group": "synapse_pyspark",
+# META   "frozen": false,
+# META   "editable": true
+# META }
+
+# CELL ********************
+
+# MAGIC %%sql
+# MAGIC select * from delta.`Files/curated/sales/SalesOrderDetail/SalesOrderDetail_Curated`
+
+# METADATA ********************
+
+# META {
+# META   "language": "sparksql",
+# META   "language_group": "synapse_pyspark",
+# META   "frozen": true,
+# META   "editable": false
+# META }
+
+# CELL ********************
+
+from delta.tables import DeltaTable
+
+delta_table = DeltaTable.forPath(spark, "Files/gold/sales/SalesOrder/FactSalesOrder")
+delta_table.history().show(50, truncate=False)
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark",
+# META   "frozen": true,
+# META   "editable": false
+# META }
+
+# CELL ********************
+
+spark.read.format("delta") \
+    .option("versionAsOf", 0) \
+    .load("Files/gold/sales/SalesOrder/FactSalesOrder") \
+    .write \
+    .format("delta") \
+    .mode("overwrite") \
+    .save("Files/gold/sales/SalesOrder/FactSalesOrder")
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark",
+# META   "frozen": true,
+# META   "editable": false
 # META }
